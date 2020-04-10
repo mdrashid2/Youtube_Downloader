@@ -127,3 +127,5 @@ STATIC_ROOT = '/static_root/'
 STATICFILES_DIRS = [
 	os.path.join(BASE_DIR,'static'),
 ]
+
+TEMP_DIR = 'temp'
