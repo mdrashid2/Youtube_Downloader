@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render 
 from pytube import YouTube
 from datetime import datetime
 import os
@@ -10,7 +10,7 @@ def home(request):
 	if request.method=='POST':
 		url = request.POST.get('url')
 		data = get_video_info(url)
-		return JsonResponse(json.dumps(data),safe=False)
+		return JsonResponse(data,safe=False)
 	return render(request,'youtube_app/home.html')
 
 def download_video(url):
@@ -24,14 +24,13 @@ def download_video(url):
 
 def get_video_info(url):
 	try:
+		info = {}
 		yt = YouTube(url)
-		info = {'status':1}
+		info['status'] = 1
 		info['title'] = yt.title
 		info['thumbnail_url'] = yt.thumbnail_url
 		info['video_avilable'] = [i.resolution for i in yt.streams.filter(progressive=True) ]
-		# print(yt.filesize)
-		# info['filesize'] = yt.filesize_approx
-		
+				
 	except Exception as e:
 		info['status'] = 0
 		info['message'] = e
