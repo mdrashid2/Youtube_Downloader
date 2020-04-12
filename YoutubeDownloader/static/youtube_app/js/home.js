@@ -1,4 +1,7 @@
-let result =  document.getElementById("result")
+let result =  document.getElementById("result");
+let load = document.getElementById('load');
+load.style.display='none';
+let response_data = null
 function ready_file(btnid){
 	result.innerHTML='<center><h5 id="wait_msg">Loading...</h5></center>';
 	let url = document.getElementById('url-field').value
@@ -6,8 +9,10 @@ function ready_file(btnid){
     xhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
 		    result.innerHTML = '';
-		    let data = JSON.parse(this.responseText);
-		    download_ready(data);
+		    response_data = JSON.parse(this.responseText);
+		    if (response_data.status == 1)
+		    	download_ready(response_data);
+		    else result.innerHTML = `<font color=red>${response_data.message}</font>`;
 	    }
  	};
   xhttp.open("POST", "", true);
@@ -41,7 +46,6 @@ function download_ready(data){
 	element.create_element('result',element.line_break);
 	element.create_element('result',element.select);
 
-	console.log(data.video_avilable)
 	for (let i=0; i<data.video_avilable.length;i++){
 		let temp_obj = new ElementCreator()
 		temp_obj.add_attribute(temp_obj.option,{
@@ -54,7 +58,7 @@ function download_ready(data){
 		);
 	}
 
-	element.create_element('result',element.button,child_innerHTML='Download');
+	element.create_element('result',element.button,child_innerHTML='Get this');
 	
 }
 
@@ -83,5 +87,38 @@ class ElementCreator {
 }
 
 function download_video(){
-	alert('site under maintenance...');
+	load.style.display='block';
+	setTimeout(function(){ 
+		location.href = "#load";
+	}, 1000);
+	let resolution = document.getElementById('select_video_option').value;
+	var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+		    console.log('success..',this.responseText)
+		    load.innerHTML=`<font color=#05C22D>Your file is ready</font><br><button class='btn btn-success'>Download Now</button>`;
+	    }
+ 	};
+  xhttp.open("POST", download_url, true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send(`url=${response_data.url}&res=${resolution}&csrfmiddlewaretoken=${csrf_token}`);
+}
+
+
+function download_now(data){
+
+	var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	    	console.log('success')
+	    	return this.responseText;
+		}
+		else{
+			return 'failed!';
+		}
+ 	};
+  xhttp.open('POST', '/download/', true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send(data);
+
 }

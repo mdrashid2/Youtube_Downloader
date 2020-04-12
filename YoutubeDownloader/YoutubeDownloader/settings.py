@@ -128,4 +128,6 @@ STATICFILES_DIRS = [
 	os.path.join(BASE_DIR,'static'),
 ]
 
+MEDIA_URL = '/media/'
+
 TEMP_DIR = 'temp'
