@@ -8,7 +8,7 @@ Use pip3 package to intsall all the dependencies.
 
 ```pip3 install -r requirements.txt```
 
-Run the sevre by typing ```python3 manage.py runserver```
+Run the django web server by typing ```python3 manage.py runserver```
 
 ## Usage
 1. Enter Youtube video's url in search bar of home page.
