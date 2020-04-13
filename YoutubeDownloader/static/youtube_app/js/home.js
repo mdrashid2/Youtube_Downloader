@@ -95,8 +95,9 @@ function download_video(){
 	var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
-		    console.log('success..',this.responseText)
-		    load.innerHTML=`<font color=#05C22D>Your file is ready</font><br><button class='btn btn-success'>Download Now</button>`;
+		    let responseText_d = JSON.parse(this.responseText)
+		    let video_url = '/media/temp/' + responseText_d.path
+		    load.innerHTML=`<font color=#05C22D>Your file is ready</font><br><a href="${video_url}" class='btn btn-success' download>Download Now</a>`;
 	    }
  	};
   xhttp.open("POST", download_url, true);
@@ -104,21 +105,3 @@ function download_video(){
   xhttp.send(`url=${response_data.url}&res=${resolution}&csrfmiddlewaretoken=${csrf_token}`);
 }
 
-
-function download_now(data){
-
-	var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-	    if (this.readyState == 4 && this.status == 200) {
-	    	console.log('success')
-	    	return this.responseText;
-		}
-		else{
-			return 'failed!';
-		}
- 	};
-  xhttp.open('POST', '/download/', true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send(data);
-
-}

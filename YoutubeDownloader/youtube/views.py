@@ -6,6 +6,7 @@ from django.conf import settings
 from django.http import JsonResponse 
 import json
 
+
 def home(request):
 	if request.method=='POST':
 		url = request.POST.get('url')
@@ -19,14 +20,15 @@ def download_ready(request):
 		try:
 			yt = YouTube(request.POST.get('url'))
 			video = yt.streams.filter(progressive=True,res=request.POST.get('res')).first()
-			temp_dir ='{}{}{}/{}/'.format(settings.BASE_DIR,settings.MEDIA_URL,settings.TEMP_DIR,datetime.now())
-			print(temp_dir)
+			current_date = datetime.now()
+			temp_dir ='{}{}{}/{}/'.format(settings.BASE_DIR,settings.MEDIA_URL,settings.TEMP_DIR,current_date)
 			if not os.path.exists(temp_dir):
 				os.makedirs(temp_dir)
 			video.download(temp_dir)
+			filepath = '{}/{}'.format(current_date,os.listdir(temp_dir)[0])
 		except Exception as e:
 			print(e)
-		return JsonResponse({'status' : 1,'path' : '{}{}.mp4'.format(temp_dir,yt.title)})
+		return JsonResponse({'status' : 1,'path' : filepath})
 
 def get_video_info(url):
 	try:
@@ -46,15 +48,4 @@ def get_video_info(url):
 
 
 
-# def download(request):
-# 	if request.method=='POST':
-# 	    file_path = request.POST.get('path')
-# 	    if os.path.exists(file_path):
-# 	        with open(file_path, 'rb') as fh:
-# 	            response = HttpResponse(fh.read(), content_type="application/force-download")
-# 	            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
-# 	            return response
-# 	    raise Http404
-# 	else:
-# 		return redirect('home_page')
 
