@@ -1,12 +1,12 @@
-# Youtube_Downloader
-This is an Youtube downloader web app wriiten in **Django/Python**, which downloads video from youtube. user have to enter the url of youtube and click on search.
+# Youtube Downloader
+This is an Youtube downloader web app written in **Django/Python**, which downloads video from youtube.
 ## Installation
 
 ```python3.5+ is required```
 
 Use pip3 package to intsall all the dependencies.
 
-```pip3 install -r requirement.txt```
+```pip3 install -r requirements.txt```
 
 Run the sevre by typing ```python3 manage.py runserver```
 
