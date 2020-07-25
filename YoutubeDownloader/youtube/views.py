@@ -25,7 +25,7 @@ def download_ready(request):
 			temp_dir ='{}{}{}/{}/'.format(settings.BASE_DIR,settings.MEDIA_URL,settings.TEMP_DIR,current_date)
 			if not os.path.exists(temp_dir):
 				os.makedirs(temp_dir)
-			clear_dir.delay(temp_dir)
+			insert_info.delay(temp_dir)
 			video.download(temp_dir)
 			filepath = '{}/{}'.format(current_date,os.listdir(temp_dir)[0])
 		except Exception as e:
