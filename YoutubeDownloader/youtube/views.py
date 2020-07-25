@@ -2,14 +2,10 @@ from django.shortcuts import render ,HttpResponse ,redirect
 from pytube import YouTube
 from datetime import datetime
 import os
-from .tasks import  add
+from .tasks import  *
 from django.conf import settings
 from django.http import JsonResponse 
 import json
-
-def test_celery(request,num1,num2):
-	add.delay(num1, num2)
-	return  redirect('home_page')
 
 
 def home(request):
@@ -29,6 +25,7 @@ def download_ready(request):
 			temp_dir ='{}{}{}/{}/'.format(settings.BASE_DIR,settings.MEDIA_URL,settings.TEMP_DIR,current_date)
 			if not os.path.exists(temp_dir):
 				os.makedirs(temp_dir)
+			clear_dir.delay(temp_dir)
 			video.download(temp_dir)
 			filepath = '{}/{}'.format(current_date,os.listdir(temp_dir)[0])
 		except Exception as e:
@@ -47,7 +44,7 @@ def get_video_info(url):
 				
 	except Exception as e:
 		info['status'] = 0
-		info['message'] = 'URL not found'
+		info['message'] = f'URL not found -- Exception {e}'
 	finally:
 		return info
 

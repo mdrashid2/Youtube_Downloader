@@ -14,14 +14,12 @@ Download Video
 	<center><h2 class="mt-2">YouGet</h2></center>
 	<div class="row mt-1">
 		<div class="col-12">
-			<input id="url-field" type="text" name="url" class="form-control m-1" placeholder="Enter Youtube URL ">
+			<input id="url-field" type="text" name="url" class="form-control m-1" placeholder="Enter Youtube URL" onkeyup="reset_load()">
 			<center><span id="search" type="button" onclick="ready_file(this.id)" class="btn btn-success">Search</span></center>
 		</div>
 		<div id="result" class="col-12 mt-3" align="center">
 		</div>
 		<div id="load" class="col-12 mt-3" align="center">
-			<span id="load-msg">Preparing your file for download</span><br>
-			<div class="lds-facebook"><div></div><div></div><div></div></div>
 		</div>
 	</div>
 </div>
