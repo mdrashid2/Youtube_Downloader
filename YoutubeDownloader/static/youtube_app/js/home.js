@@ -10,14 +10,25 @@ function ready_file(btnid){
 	    if (this.readyState == 4 && this.status == 200) {
 		    result.innerHTML = '';
 		    response_data = JSON.parse(this.responseText);
-		    if (response_data.status == 1)
-		    	download_ready(response_data);
+		    if (response_data.status == 1){
+		        add_wait_loader();
+		        download_ready(response_data);
+		    }
 		    else result.innerHTML = `<font color=red>${response_data.message}</font>`;
 	    }
  	};
   xhttp.open("POST", "", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send(`url=${url}&csrfmiddlewaretoken=${csrf_token}`)
+}
+
+function reset_load(){
+    load.innerHTML = '';
+}
+
+function add_wait_loader(){
+    load.innerHTML = `<span id="load-msg">Preparing your file for download</span><br>
+			<div class="lds-facebook"><div></div><div></div><div></div></div>`;
 }
 
 
